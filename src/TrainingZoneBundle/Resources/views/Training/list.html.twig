@@ -1,0 +1,27 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}TrainingZoneBundle:Training:list{% endblock %}
+
+{% block innerMenu %}
+    <div>
+        <ul>
+            {% for training in allTrainings%}
+                <div class ="row"
+                     
+                        <a href="{{url("trainingzone_training_show", {"id":training.id})}}">{{training.name}}</a>
+                        <div class="btn-group pull-right btn-sm">
+                            <a href="{{url("trainingzone_training_edit", {"id":training.id})}}" class="btn btn-info " role="button">Edytuj</a>
+                            <a href="{{url("trainingzone_training_delete", {"id":training.id})}}" class="btn btn-danger " role="button">Usuń</a>
+                        </div>
+                </div>
+
+                
+            {%else %}
+                <div><h3>Nie ma zadeklarowanych </h3></div>
+                <div><a href="{{url("trainingzone_training_add")}}" class="btn btn-primary" role="button">Dodaj</a></div>
+
+            {%endfor%}
+        </ul>
+    </div>
+{% endblock %}
+

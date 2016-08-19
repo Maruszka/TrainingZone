@@ -1,0 +1,23 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Kategoria {% endblock %}
+
+{% block innerMenu %}
+
+    {%if category is null%}
+        <h4> Nie ma jeszcze zadeklarowanych kategorii </h4>
+        <div><a href="{{url("trainingzone_category_add")}}" class="btn btn-primary" role="button">Dodaj</a></div>
+    {%else%}   
+        <div class ="row">
+            <div class="well"> 
+                <h4>Kategoria: {{category.name}} </h4>
+            </div>
+            <div class ="row">
+                <div class="well"> 
+
+                    {% include "TrainingZoneBundle:Category:category.html.twig" with {'category' : category}%}
+
+                </div>
+            </div>
+        {%endif%}
+    {% endblock %}

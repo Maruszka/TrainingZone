@@ -1,0 +1,26 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}TrainingZoneBundle:Category:showAll{% endblock %}
+
+{% block innerMenu %}
+    <div>
+        <ul>
+            {% for category in allCategories%}
+                <div class ="row"
+                     
+                        <a href="{{url("trainingzone_category_show", {"id":category.id})}}">{{category.name}}</a>
+                        <div class="btn-group pull-right btn-sm">
+                            <a href="{{url("trainingzone_category_edit", {"id":category.id})}}" class="btn btn-info " role="button">Edytuj</a>
+                            <a href="{{url("trainingzone_category_delete", {"id":category.id})}}" class="btn btn-danger " role="button">Usuń</a>
+                        </div>
+                </div>
+
+                
+            {%else %}
+                <div><h3>Nie ma zadeklarowanych kategorii</h3></div>
+                <div><a href="{{url("trainingzone_category_add")}}" class="btn btn-primary" role="button">Dodaj</a></div>
+
+            {%endfor%}
+        </ul>
+    </div>
+{% endblock %}

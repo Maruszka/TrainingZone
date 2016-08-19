@@ -1,0 +1,57 @@
+<?php
+// src/AppBundle/Entity/User.php
+
+namespace TrainingZoneBundle\Entity;
+
+use FOS\UserBundle\Model\User as BaseUser;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="fos_user")
+ */
+class User extends BaseUser
+{
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    public function __construct()
+    {
+        parent::__construct();
+        // your own logic
+    }
+    /**
+     * @ORM\Column(name="firstName", type="string", nullable = true)
+     */
+    protected $firstName;
+    
+    /**
+     * @ORM\Column(name="lastName", type="string", nullable = true)
+     */
+    protected $lastName;
+    
+    /**
+     * @ORM\Column(name="phone", type="string" , nullable = true)
+     */
+    protected $phone;
+    
+    /**
+     * @ORM\Column(name="pesel", type="string", nullable = true)
+     */
+    protected $pesel;
+    
+    /**
+     * @ORM\Column(name="dateOfBirth", type="string", nullable = true)
+     */
+    protected $dateOfBirth;
+    
+
+    
+    
+    
+    
+}
