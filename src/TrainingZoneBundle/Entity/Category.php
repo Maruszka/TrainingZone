@@ -37,6 +37,11 @@ class Category {
         $this->trainings = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+//function toString - allow to display object using echo
+    public function __toString() {
+        return $this->name;
+    }
+
     /**
      * Get id
      *
@@ -67,15 +72,13 @@ class Category {
         return $this->name;
     }
 
-
     /**
      * Add trainings
      *
      * @param \TrainingZoneBundle\Entity\Training $trainings
      * @return Category
      */
-    public function addTraining(\TrainingZoneBundle\Entity\Training $trainings)
-    {
+    public function addTraining(\TrainingZoneBundle\Entity\Training $trainings) {
         $this->trainings[] = $trainings;
 
         return $this;
@@ -86,8 +89,7 @@ class Category {
      *
      * @param \TrainingZoneBundle\Entity\Training $trainings
      */
-    public function removeTraining(\TrainingZoneBundle\Entity\Training $trainings)
-    {
+    public function removeTraining(\TrainingZoneBundle\Entity\Training $trainings) {
         $this->trainings->removeElement($trainings);
     }
 
@@ -96,8 +98,8 @@ class Category {
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getTrainings()
-    {
+    public function getTrainings() {
         return $this->trainings;
     }
+
 }

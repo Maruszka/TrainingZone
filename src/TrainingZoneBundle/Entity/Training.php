@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="TrainingZoneBundle\Entity\TrainingRepository")
  */
-class Training
-{
+class Training {
+
     /**
      * @var integer
      *
@@ -62,22 +62,34 @@ class Training
      * @ORM\Column(name="place", type="string", length=255)
      */
     private $place;
-    
+
     /**
      *
      * @ORM\OneToOne(targetEntity="Status", inversedBy="training")
      * @ORM\JoinColumn()
      */
     private $status;
-    
+
     /**
      * @ORM\ManyToMany(targetEntity="Category", inversedBy="trainings")
      * @ORM\JoinTable()
      */
     private $categories;
 
-public function __construct() {
+    /**
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="trainings")
+     * @ORM\JoinTable()
+     */
+    private $users;
+
+    public function __construct() {
         $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->status = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    public function __toString() {
+        return $this->date;
     }
 
     /**
@@ -85,8 +97,7 @@ public function __construct() {
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -96,8 +107,7 @@ public function __construct() {
      * @param string $name
      * @return Training
      */
-    public function setName($name)
-    {
+    public function setName($name) {
         $this->name = $name;
 
         return $this;
@@ -108,8 +118,7 @@ public function __construct() {
      *
      * @return string 
      */
-    public function getName()
-    {
+    public function getName() {
         return $this->name;
     }
 
@@ -119,8 +128,7 @@ public function __construct() {
      * @param string $description
      * @return Training
      */
-    public function setDescription($description)
-    {
+    public function setDescription($description) {
         $this->description = $description;
 
         return $this;
@@ -131,8 +139,7 @@ public function __construct() {
      *
      * @return string 
      */
-    public function getDescription()
-    {
+    public function getDescription() {
         return $this->description;
     }
 
@@ -142,8 +149,7 @@ public function __construct() {
      * @param \DateTime $date
      * @return Training
      */
-    public function setDate($date)
-    {
+    public function setDate($date) {
         $this->date = $date;
 
         return $this;
@@ -154,8 +160,7 @@ public function __construct() {
      *
      * @return \DateTime 
      */
-    public function getDate()
-    {
+    public function getDate() {
         return $this->date;
     }
 
@@ -165,8 +170,7 @@ public function __construct() {
      * @param integer $max
      * @return Training
      */
-    public function setMax($max)
-    {
+    public function setMax($max) {
         $this->max = $max;
 
         return $this;
@@ -177,8 +181,7 @@ public function __construct() {
      *
      * @return integer 
      */
-    public function getMax()
-    {
+    public function getMax() {
         return $this->max;
     }
 
@@ -188,8 +191,7 @@ public function __construct() {
      * @param integer $min
      * @return Training
      */
-    public function setMin($min)
-    {
+    public function setMin($min) {
         $this->min = $min;
 
         return $this;
@@ -200,8 +202,7 @@ public function __construct() {
      *
      * @return integer 
      */
-    public function getMin()
-    {
+    public function getMin() {
         return $this->min;
     }
 
@@ -211,8 +212,7 @@ public function __construct() {
      * @param string $place
      * @return Training
      */
-    public function setPlace($place)
-    {
+    public function setPlace($place) {
         $this->place = $place;
 
         return $this;
@@ -223,8 +223,7 @@ public function __construct() {
      *
      * @return string 
      */
-    public function getPlace()
-    {
+    public function getPlace() {
         return $this->place;
     }
 
@@ -234,8 +233,7 @@ public function __construct() {
      * @param \TrainingZoneBundle\Entity\Status $status
      * @return Training
      */
-    public function setStatus(\TrainingZoneBundle\Entity\Status $status = null)
-    {
+    public function setStatus(\TrainingZoneBundle\Entity\Status $status = null) {
         $this->status = $status;
 
         return $this;
@@ -246,8 +244,7 @@ public function __construct() {
      *
      * @return \TrainingZoneBundle\Entity\Status 
      */
-    public function getStatus()
-    {
+    public function getStatus() {
         return $this->status;
     }
 
@@ -257,8 +254,7 @@ public function __construct() {
      * @param \TrainingZoneBundle\Entity\Category $categories
      * @return Training
      */
-    public function addCategory(\TrainingZoneBundle\Entity\Category $categories)
-    {
+    public function addCategory(\TrainingZoneBundle\Entity\Category $categories) {
         $this->categories[] = $categories;
 
         return $this;
@@ -269,8 +265,7 @@ public function __construct() {
      *
      * @param \TrainingZoneBundle\Entity\Category $categories
      */
-    public function removeCategory(\TrainingZoneBundle\Entity\Category $categories)
-    {
+    public function removeCategory(\TrainingZoneBundle\Entity\Category $categories) {
         $this->categories->removeElement($categories);
     }
 
@@ -279,8 +274,38 @@ public function __construct() {
      *
      * @return \Doctrine\Common\Collections\Collection 
      */
-    public function getCategories()
-    {
+    public function getCategories() {
         return $this->categories;
     }
+
+    /**
+     * Add users
+     *
+     * @param \TrainingZoneBundle\Entity\User $users
+     * @return Training
+     */
+    public function addUser(\TrainingZoneBundle\Entity\User $users) {
+        $this->users[] = $users;
+
+        return $this;
+    }
+
+    /**
+     * Remove users
+     *
+     * @param \TrainingZoneBundle\Entity\User $users
+     */
+    public function removeUser(\TrainingZoneBundle\Entity\User $users) {
+        $this->users->removeElement($users);
+    }
+
+    /**
+     * Get users
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUsers() {
+        return $this->users;
+    }
+
 }

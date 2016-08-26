@@ -31,23 +31,23 @@
             {% block navbar %}
                 <div class="container-fluid">
                     <div class="navbar-header">
-                        <a class="navbar-brand" href="#">Training Zone</a>
+                        <a class="navbar-brand" href="#">Twitter</a>
                     </div>
                     <div class="collapse navbar-collapse" id="myNavbar">
                         <ul class="nav navbar-nav">
-                            <li class="active"><a href="index.html.twig">Home</a></li>
+                            <li class="active"><a href="{{url('trainingzone_default_index')}}">Home</a></li>
                         </ul>   
                         <ul class="nav navbar-nav navbar-right">
                             <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                    <span class="glyphicon glyphicon-envelope"></span> Mail <span class="caret"></span>
-                                </a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-envelope"></span> Mail <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li><a href="">Compose message</a></li>
                                     <li><a href="">Inbox</a></li>
                                     <li><a href="">Outbox</a></li>
                                 </ul>
                             </li>
+                            <li><a href=""><span class="glyphicon glyphicon-user"></span> Username </a></li>
+                            <li><a href=""><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                         </ul>
                     </div>
                 </div>
@@ -88,40 +88,37 @@
                                         </a>
                                     </div>
                                 </div>
-
                             </div>
                         {% endblock %}
                     </div>
                 </div>
+                {# wewnetrzne menu #}
                 <div class="row">
                     <div class="col-md-12">
                         {% block innerMenu %}
                             {#inner menu#}
                             <h2>Training zone</h2>
                             <ul class="nav nav-tabs">
-                                <li class="active"> 
-                                    {% block liAll %}
-                                        <a href="#home">All</a>
+                                {% block liAll %}
+                                    <li class="active"><a data-toggle="tab" href="#home">All</a> </li>
                                     {% endblock %}
-                                </li>
-                                <li>
-                                    {% block liCategory %}
-                                        <a href="#menu1">Category 1</a></li>
-                                    {% endblock %}
-
+                                    {% block liCategory %}    
+                                        {% for category in allCategories %}
+                                        <li><a data-toggle="tab" href="#menu{{loop.index}}">{{category.name}}</a></li>
+                                        {% endfor %}
+                                    {% endblock %} 
                             </ul>
 
                             <div class="tab-content">
-                                <div id="home" class="tab-pane fade in active">
-                                    {% block all %} {% endblock %}
-                                </div>
-                                <div id="menu1" class="tab-pane fade">
-                                    {% block category %} 
-                                        <h3>Menu 1</h3>
-                                        <p>Some content in menu 1.</p>
+                                {% block all %} 
+                                    {% include 'TrainingZoneBundle:Training:list.html.twig' %}
+                                    {#       {{ render(controller('TrainingZoneBundle:Training:list'))}}  #}
+                                {% endblock %}
 
-                                    {% endblock %}
-                                </div>
+                                {% block categories %} 
+                                    {#           {% include 'TrainingZoneBundle:Training:byCategory.html.twig' %}#}
+                                    {{ render(controller('TrainingZoneBundle:Training:byCategory'))}}                               
+                                {% endblock %}
 
                             </div>
                         {% endblock %}
@@ -139,7 +136,7 @@
 
             <!-- Bootstrap Core JavaScript -->
             <script src="{{asset("bundles/trainingzone/js/bootstrap.min.js")}}"></script>
-            {% endblock %}
+        {% endblock %}
 
 
 

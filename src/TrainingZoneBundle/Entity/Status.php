@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="TrainingZoneBundle\Entity\StatusRepository")
  */
-class Status
-{
+class Status {
+
     /**
      * @var integer
      *
@@ -27,22 +27,23 @@ class Status
      * @ORM\Column(name="type", type="string", length=255)
      */
     private $type;
-    
+
     /**
      *
      * @ORM\OneToOne(targetEntity="Training", mappedBy="status")
      */
     private $training;
-            
 
+    public function __toString() {
+        return $this->type;
+    }
 
     /**
      * Get id
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -52,8 +53,7 @@ class Status
      * @param string $type
      * @return Status
      */
-    public function setType($type)
-    {
+    public function setType($type) {
         $this->type = $type;
 
         return $this;
@@ -64,8 +64,7 @@ class Status
      *
      * @return string 
      */
-    public function getType()
-    {
+    public function getType() {
         return $this->type;
     }
 
@@ -75,8 +74,7 @@ class Status
      * @param \TrainingZoneBundle\Entity\Training $training
      * @return Status
      */
-    public function setTraining(\TrainingZoneBundle\Entity\Training $training = null)
-    {
+    public function setTraining(\TrainingZoneBundle\Entity\Training $training = null) {
         $this->training = $training;
 
         return $this;
@@ -87,8 +85,8 @@ class Status
      *
      * @return \TrainingZoneBundle\Entity\Training 
      */
-    public function getTraining()
-    {
+    public function getTraining() {
         return $this->training;
     }
+
 }

@@ -1,0 +1,50 @@
+{#petla rekurncyjna wyswietla szablon z traningami po kategoriach#}
+{% for key, value in allByCat   %}
+    {% if key is iterable %}
+        {% include 'TrainingZoneBundle:Training:subTemplate.html.twig' with {'allByCat' : key} %}
+    {% else %}
+
+        <div id="menu{{loop.index}}" class="tab-pane fade"> 
+            {% for trainings in value %} 
+                {% for training in trainings %} 
+                    <div class="col-sm-4 col-lg-4 col-md-4">
+                        <div class="thumbnail">
+
+                            <img src="http://placehold.it/320x150" alt="">
+                            <div class="caption">
+                                <h4 class="pull-right"><a class="btn btn-default" role="button" href="{{url("trainingzone_training_show", {"id":training.id})}}">More info</a></h4>
+                                <h4>
+                                    <a href="{{url("trainingzone_training_show", {"id":training.id})}}">{{training.name}}</a>
+                                </h4>
+                                <p>{{ training.description[:149] ~ '...' }}</p>
+
+                            </div>
+                            <div class="ratings">
+                                {#     <p class="pull-right">15 reviews</p>#}
+                                <h4 class="pull-right"><a class="btn btn-info" role="button" href="">Enroll</a></h4
+                                <p class="pull-left">
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                    <span class="glyphicon glyphicon-star"></span>
+                                </p>
+                                {#                  <h4 class="pull-right"><a class="btn btn-info" role="button" href="">Enroll</a></h4>#}
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                {%else %}
+
+                    <div><h3>There are no trainings </h3></div>
+                    <div><a href="{{url("trainingzone_training_add")}}" class="btn btn-primary" role="button">Dodaj</a></div>
+
+                {%endfor%}                 
+            {% endfor %}
+        </div>
+
+    {% endif %}
+{% endfor %}
+

@@ -1,27 +1,46 @@
-{% extends "::base.html.twig" %}
 
-{% block title %}TrainingZoneBundle:Training:list{% endblock %}
+{% block all %}
+    <div id="home" class="tab-pane fade in active">                               
+        {% for training in list%}
 
-{% block innerMenu %}
-    <div>
-        <ul>
-            {% for training in allTrainings%}
-                <div class ="row"
-                     
-                        <a href="{{url("trainingzone_training_show", {"id":training.id})}}">{{training.name}}</a>
-                        <div class="btn-group pull-right btn-sm">
-                            <a href="{{url("trainingzone_training_edit", {"id":training.id})}}" class="btn btn-info " role="button">Edytuj</a>
-                            <a href="{{url("trainingzone_training_delete", {"id":training.id})}}" class="btn btn-danger " role="button">Usuń</a>
-                        </div>
+            <div class="col-sm-4 col-lg-4 col-md-4">
+                <div class="thumbnail">
+
+                    <img src="http://placehold.it/320x150" alt="">
+                    <div class="caption">
+                        <h4 class="pull-right"><a class="btn btn-default" role="button" href="{{url("trainingzone_training_show", {"id":training.id})}}">More info</a></h4>
+                        <h4>
+                            <a href="{{url("trainingzone_training_show", {"id":training.id})}}">{{training.name}}</a>
+                        </h4>
+                        <p>{{ training.description[:149] ~ '...' }}</p>
+
+                    </div>
+                    <div class="ratings">
+                        {#     <p class="pull-right">15 reviews</p>#}
+                        <h4 class="pull-right"><a class="btn btn-info" role="button" href="">Enroll</a></h4
+                        <p class="pull-left">
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                            <span class="glyphicon glyphicon-star"></span>
+                        </p>
+                        {#                  <h4 class="pull-right"><a class="btn btn-info" role="button" href="">Enroll</a></h4>#}
+                    </div>
+
                 </div>
+            </div>
 
-                
-            {%else %}
-                <div><h3>Nie ma zadeklarowanych </h3></div>
-                <div><a href="{{url("trainingzone_training_add")}}" class="btn btn-primary" role="button">Dodaj</a></div>
 
-            {%endfor%}
-        </ul>
+        {%else %}
+
+            <div><h3>Nie ma zadeklarowanych szkolen </h3></div>
+            <div><a href="{{url("trainingzone_training_add")}}" class="btn btn-primary" role="button">Dodaj</a></div>
+
+        {%endfor%}
     </div>
+
+
+
 {% endblock %}
 

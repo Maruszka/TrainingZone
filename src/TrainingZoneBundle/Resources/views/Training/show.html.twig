@@ -3,5 +3,15 @@
 {% block title %}TrainingZoneBundle:Training:show{% endblock %}
 
 {% block body %}
-<h1>Welcome to the Training:show page</h1>
+    {{training.name}}<br>
+    {{training.description}}<br>
+    {{training.date|date('Y-m-d H:i:s') }}<br>
+    {{training.place}}<br>
+    {{training.min}}<br>
+    {{training.status}}<br>
+    {% for category in categories %} 
+        {{category.name}}<br>
+    {% endfor %}
+
+
 {% endblock %}

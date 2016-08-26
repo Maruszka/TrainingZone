@@ -10,9 +10,14 @@ use Symfony\Component\HttpFoundation\Request;
 use TrainingZoneBundle\Entity\Training;
 use TrainingZoneBundle\Form\TrainingType;
 
+/**
+ * @Route("/tr")
+ *  
+ */
 class TrainingController extends Controller {
 
-    private function addForm() {
+    private function addForm(Training $training) {
+
         $form = $this->createForm(new TrainingType(), $training, array(
             'action' => $this->generateUrl('trainingzone_training_add'),
             'method' => 'POST',
@@ -40,26 +45,36 @@ class TrainingController extends Controller {
      * @Method({"GET"})
      */
     public function addAction() {
-        $form = $this->addForm();
+
+        $training = new Training();
+        $form = $this->addForm($training);
         return array("form" => $form->createView());
     }
 
     /**
      * @Route("/add")
      * @Method({"POST"})
+     * @Template("TrainingZoneBundle:Training:show.html.twig")
      */
     public function addPostAction(Request $req) {
-        $entity = new Training();
-        $form = $this->addForm($entity);
+        $training = new Training();
+        $form = $this->addForm($training);
         $form->handleRequest($req);
+        $id = $training->getId();
+        $categories = $training->getCategories();
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($entity);
+            $em->persist($training);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('trainingzone_training_show', array('id' => $entity->getId())));
+            return ['id' => $id, "training" => $training, "categories" => $categories];
         }
+//        
+//        return array(
+//            'training' => $training,
+//            'form'   => $form->createView(),
+//        );
     }
 
     /**
@@ -87,7 +102,7 @@ class TrainingController extends Controller {
         $training = $repo->find($id);
         return array("category" => $training);
 
-       $editForm = $this->editForm($training);
+        $editForm = $this->editForm($training);
 
         return array(
             'training' => $training,
@@ -103,7 +118,7 @@ class TrainingController extends Controller {
         $repo = $this->getDoctrine()->getRepository("TrainingZoneBundle:Training");
         $training = $repo->find($id);
         $em = $this->getDoctrine()->getManager();
-        
+
         if (!$training) {
             throw $this->createNotFoundException('Unable to find User entity.');
         }
@@ -120,7 +135,6 @@ class TrainingController extends Controller {
         return array(
             'training' => $training,
             'edit_form' => $editForm->createView(),
-
         );
     }
 
@@ -131,10 +145,11 @@ class TrainingController extends Controller {
     public function showAction($id) {
         $repo = $this->getDoctrine()->getRepository("TrainingZoneBundle:Training"); //
         $training = $repo->find($id);
+        $categories = $training->getCategories();
         if ($training === null) {
             return $this->redirectToRoute("trainingzone_training_list");
         }
-        return $this->render("TrainingZoneBundle:Training:show.html.twig", ["training" => $training]);
+        return $this->render("TrainingZoneBundle:Training:show.html.twig", ["training" => $training, 'categories' => $categories]);
     }
 
     /**
@@ -147,19 +162,31 @@ class TrainingController extends Controller {
         if ($allTrainings === null) {
             return new Response("There are no traininigs to show");
         }
-        return array("allTrainings" => $allTrainings);
-    
+        return array("list" => $allTrainings);
     }
 
     /**
-     * @Route("/byName")
+     * @Route("/byCategory")
      * @Template()
      */
-    public function byNameAction() {
-        return array(
-                // ...
-        );
+    public function byCategoryAction() {
+        $repo = $this->getDoctrine()->getRepository("TrainingZoneBundle:Training");
+        $repo2 = $this->getDoctrine()->getRepository("TrainingZoneBundle:Category");
+        $allCategories = $repo2->findAll();
+
+        foreach ($allCategories as $key => $category) {
+            $catId = $category->getId();
+            $allByCat[] = $repo->getTrainingByCategory($catId);
+        }
+
+
+        if ($allByCat == null) {
+            return new Response("There are no traininigs to show");
+        }
+        
+        return array("allByCat" => $allByCat, "allCategories" => $allCategories);
     }
+
 
     /**
      * @Route("/byDate")

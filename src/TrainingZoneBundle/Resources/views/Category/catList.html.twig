@@ -1,0 +1,19 @@
+{# empty Twig template #}
+
+{% for category in allCategories%}
+
+{% endfor %}
+
+{% block liCategory %}
+    {#                <a href="#menu1">Category 1</a></li>#}
+{% endblock %}
+
+{% block categories %} 
+    <div id="menu1" class="tab-pane fade">
+
+        <h3>Menu 1</h3>
+        <p>Some content in menu 1.</p>
+
+
+    </div>
+{% endblock %}

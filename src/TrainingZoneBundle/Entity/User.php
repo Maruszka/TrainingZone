@@ -49,10 +49,15 @@ class User extends BaseUser
      */
     protected $dateOfBirth;
     
+    /**
+     * @ORM\ ManyToMany(targetEntity="Training", mappedBy="users")
+     */
+    protected $trainings;
 
-    
-    
-    
+    //function toString - allow to display object using echo
+    public function __toString() {
+        return $this->firstName . " " . $this->lastName;
+    } 
     
 
     /**
@@ -168,5 +173,38 @@ class User extends BaseUser
     public function getDateOfBirth()
     {
         return $this->dateOfBirth;
+    }
+
+    /**
+     * Add trainings
+     *
+     * @param \TrainingZoneBundle\Entity\Training $trainings
+     * @return User
+     */
+    public function addTraining(\TrainingZoneBundle\Entity\Training $trainings)
+    {
+        $this->trainings[] = $trainings;
+
+        return $this;
+    }
+
+    /**
+     * Remove trainings
+     *
+     * @param \TrainingZoneBundle\Entity\Training $trainings
+     */
+    public function removeTraining(\TrainingZoneBundle\Entity\Training $trainings)
+    {
+        $this->trainings->removeElement($trainings);
+    }
+
+    /**
+     * Get trainings
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getTrainings()
+    {
+        return $this->trainings;
     }
 }

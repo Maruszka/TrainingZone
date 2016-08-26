@@ -63,6 +63,8 @@ class Training
      */
     private $place;
     
+
+    
     /**
      *
      * @ORM\OneToOne(targetEntity="Status", inversedBy="training")
@@ -75,11 +77,25 @@ class Training
      * @ORM\JoinTable()
      */
     private $categories;
+    
+    /**
+     * @ORM\ManyToMany(targetEntity="User", inversedBy="trainings")
+     * @ORM\JoinTable()
+     */
+    private $users;
+    
+    
+    
+    
 
 public function __construct() {
         $this->categories = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->status = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->users = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
+    public function __toString() {
+        return $this->date;
+    }
     /**
      * Get id
      *
@@ -249,5 +265,38 @@ public function __construct() {
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Add categories
+     *
+     * @param \TrainingZoneBundle\Entity\Category $categories
+     * @return Training
+     */
+    public function addCategory(\TrainingZoneBundle\Entity\Category $categories)
+    {
+        $this->categories[] = $categories;
+
+        return $this;
+    }
+
+    /**
+     * Remove categories
+     *
+     * @param \TrainingZoneBundle\Entity\Category $categories
+     */
+    public function removeCategory(\TrainingZoneBundle\Entity\Category $categories)
+    {
+        $this->categories->removeElement($categories);
+    }
+
+    /**
+     * Get categories
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getCategories()
+    {
+        return $this->categories;
     }
 }
